@@ -12,7 +12,7 @@ class Signup extends Component {
         value: '',
         valid: false,
         touched: false,
-        validators: [required, email]
+        validators: [required]
       },
       password: {
         value: '',
@@ -32,7 +32,7 @@ class Signup extends Component {
 
   inputChangeHandler = (input, value) => {
     this.setState(prevState => {
-      let isValid = true;
+      let isValid = false;
       for (const validator of prevState.signupForm[input].validators) {
         isValid = isValid && validator(value);
       }

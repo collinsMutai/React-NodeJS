@@ -41,15 +41,11 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-
 const MONGODB_URI = process.env.MONGODB_URI;
-
 
 // app.use(bodyParser.urlencoded()) form data
 app.use(bodyParser.json());
-app.use(
-  multer({ storage: storage, fileFilter: fileFilter }).single("image")
-);
+app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use((req, res, next) => {
@@ -63,21 +59,23 @@ app.use((req, res, next) => {
 });
 
 const feedRoutes = require("./routes/feed");
+const authRoutes = require("./routes/auth");
 
 app.use("/feed", feedRoutes);
-
+app.use("/auth", authRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);
-  const status = error.statusCode || 500
-  const message = error.message
-  res.status(status).json({message: message})
-})
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
 
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
     console.log("connected");
-    app.listen(8080);
+    app.listen(process.env.PORT || 8080);
   })
   .catch((err) => console.log(err));
