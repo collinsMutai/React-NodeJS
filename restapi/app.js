@@ -1,11 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
 const multer = require("multer");
-
 const { v4: uuidv4 } = require("uuid");
-
 const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
